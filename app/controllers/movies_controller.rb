@@ -44,4 +44,5 @@ class MoviesController < ApplicationController
 
   def sort_movies
       @movies = Movie.find["Aladdin"]
+  end 
 end
