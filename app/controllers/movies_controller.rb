@@ -42,4 +42,6 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def sort_movies
+      @movies = Movie.find["Aladdin"]
 end
