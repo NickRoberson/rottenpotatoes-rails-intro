@@ -42,7 +42,12 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
   
-  def sort_movies
-      @movies = Movie.find["Aladdin"]
+  def sort_by_title
+      @movies.sort_by! { |movie| movie.title }
+  end
+  
+  
+  def sort_by_date
+      @movies.sort_by! { |movie| movie.release_date }
   end
 end
