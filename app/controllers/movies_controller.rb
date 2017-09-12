@@ -46,7 +46,6 @@ class MoviesController < ApplicationController
       @movies.sort_by! { |movie| movie.title }
   end
   
-  
   def sort_by_date
       @movies.sort_by! { |movie| movie.release_date }
   end
