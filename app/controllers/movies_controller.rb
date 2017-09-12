@@ -11,7 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    # displays the movies in a certain oreder depending on what is in 'params'
+    @sort = params[:sort_by]
+    display_movies
   end
 
   def new
@@ -42,11 +44,16 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
   
-  def sort_by_title
-      @movies.sort_by! { |movie| movie.title }
-  end
-  
-  def sort_by_date
-      @movies.sort_by! { |movie| movie.release_date }
-  end
+  def display_movies
+    @sort = params[:sort_by]
+    if @sort == 'title'
+      puts "Sorting Movies by title . . ."
+      @movies = Movie.order(:title)
+    elsif @sort == 'release_date'
+      puts "Sorting Movies by release_date . . ."
+      @movies = Movie.order(:release_date)
+    else
+      @movies = Movie.all
+    end 
+  end 
 end
