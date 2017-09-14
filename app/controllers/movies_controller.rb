@@ -14,8 +14,6 @@ class MoviesController < ApplicationController
 
   # main function that runs the view
   def index
-    # gets the ratings to be displayed
-    @all_ratings = Movie.get_ratings
     # displays the movies based on what we are sorting by 
     display_movies
   end
@@ -55,19 +53,22 @@ class MoviesController < ApplicationController
   
   # displays movies based on sorting parameters
   def display_movies
-    
+
+    # get all info from params[] and session[]
+    @sort = params[:sort_by] || session[:sort_by]
+    @all_ratings = Movie.all_ratings
+    @selected_ratings = params[:ratings] || session[:ratings] || {}
+      
     # filter movies by rating
-    # if no ratings are provided, choose all movies
     movies = []
     if params[:ratings]
-      movies = Movie.where(rating: params[:ratings].keys)
+      movies = Movie.where(rating: @selected_ratings.keys)
     else
       movies = Movie.all
     end 
     
     # display movies, sorting by some parameter
     puts "Displaying movies . . ."
-    @sort = params[:sort_by]
     if @sort == 'title'
       @movies = movies.order(:title)
     elsif @sort == 'release_date'
@@ -75,5 +76,12 @@ class MoviesController < ApplicationController
     else
       @movies = movies
     end
+    
+    # if we detect a change in settings, store it. 
+    if session[:sort] != params[:sort] or session[:ratings] != params[:ratings]
+      session[:sort_by] = @sort
+      session[:ratings] = @selected_ratings
+      redirect_to :sort_by => @sort, :ratings => @selected_ratings 
+    end 
   end
 end
